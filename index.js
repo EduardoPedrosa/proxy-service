@@ -1,31 +1,41 @@
-const express = require('express');
-const axios = require('axios');
-const morgan = require('morgan');
+const express = require("express");
+const axios = require("axios");
+const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(morgan('combined'));
+app.use(morgan("combined"));
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+    methods: "*",
+    allowedHeaders: "*",
+  })
+);
 
-app.all('*', async (req, res) => {
+app.all("*", async (req, res) => {
   try {
     const { method, url, body } = req;
-    
+
     console.log({
-        method,
-        url: url.replace('/', ''),
-        data: body,
-      })
+      method,
+      url: url.replace("/", ""),
+      data: body,
+    });
     const response = await axios({
       method,
-      url: url.replace('/', ''),
+      url: url.replace("/", ""),
       data: Object.keys(body).length ? body : undefined,
     });
 
     res.status(response.status).json(response.data);
   } catch (error) {
-    res.status(error?.response?.status || 500).json(error?.response?.data || {});
+    res
+      .status(error?.response?.status || 500)
+      .json(error?.response?.data || {});
   }
 });
 
