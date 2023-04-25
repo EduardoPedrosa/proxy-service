@@ -11,7 +11,7 @@ COPY index.js .
 RUN npm install
 
 # Defina a porta que a aplicação deve ser executada
-EXPOSE 3000
+EXPOSE 5000
 
 # Inicie a aplicação quando o contêiner for iniciado
 CMD [ "node", "index.js" ]
